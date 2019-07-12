@@ -930,7 +930,7 @@ classdef MATLAnswer < handle
             % now that they are all answers
             answers = cat(1, answers{:});
 
-            isMATL = ~cellfun(@isempty, regexp({answers.body}, '^MATL'));
+            isMATL = ~cellfun(@isempty, regexp({answers.body}, '^\s*MATL'));
             answers = answers(isMATL);
 
             % Now we want the actual content from the answers
@@ -943,7 +943,7 @@ classdef MATLAnswer < handle
 
             for k = 1:ceil(numel(answers) / chunksize)
                 chunk = answers(((k - 1) * chunksize + 1) : ...
-                                (min(k * chunksize - 1, numel(answers))));
+                                (min(k * chunksize, numel(answers))));
 
                 ids = sprintf('%d;', chunk.answer_id);
                 url = strcat(MATLAnswer.API_URL, '/answers/', ids(1:end-1));
